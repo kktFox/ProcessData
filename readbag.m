@@ -81,7 +81,7 @@ j = 1:1:maxindex;
 set(0,'defaultfigurecolor','w');
 plot(c,diffs,'LineWidth',2);
 ylabel('yaw/^o');
-xlabel('时间/s');
+xlabel('time/s');
 title('yaw');
 grid on;
 
