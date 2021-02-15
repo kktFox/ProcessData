@@ -1,21 +1,18 @@
 
-% bagInfo = rosbag('info','/home/ant/wx/bag/nonloc/bag/ren01.bag')
-% filePath = fullfile('matlab','ren01.bag');
+% bagInfo = rosbag('info','filePath')
+% filePath = fullfile('matlab','bagname');
 % bagSelect = rosbag(filePath);
-bag = rosbag('/home/ant/wx/bag/nonloc/bag4/outdoor3.bag');
-bagselect1 = select(bag,'Topic','/nav_odom');
-nav_odom = readMessages(bagselect1,'DataFormat','struct');
-bagselect2 = select(bag,'Topic','/pioneer_sensors/EKF_Localization_RS232/filteredodometry');
-nonloc = readMessages(bagselect2,'DataFormat','struct');
+bag = rosbag('filepath');
+bagselect1 = select(bag,'Topic','/topic1');
+topic1 = readMessages(bagselect1,'DataFormat','struct');
+bagselect2 = select(bag,'Topic','/topic2');
+topic2 = readMessages(bagselect2,'DataFormat','struct');
 
-% points1_x = cellfun(@(m) double(m.Pose.Pose.Position.X),nav_odom);
-% points1_y = cellfun(@(m) double(m.Pose.Pose.Position.Y),nav_odom);
-% points2_x = cellfun(@(m) double(m.Pose.Pose.Position.X),nonloc);
-% points2_y = cellfun(@(m) double(m.Pose.Pose.Position.Y),nonloc);
-% points1_x = points1_x - 697150;
-% points1_y = points1_y - 4065400;
-% points2_x = points2_x - 697150 + 700000;
-% points2_y = points2_y - 4065400 + 4000000;
+% points1_x = cellfun(@(m) double(m.Pose.Pose.Position.X),topic1);
+% points1_y = cellfun(@(m) double(m.Pose.Pose.Position.Y),topic1);
+% points2_x = cellfun(@(m) double(m.Pose.Pose.Position.X),topic2);
+% points2_y = cellfun(@(m) double(m.Pose.Pose.Position.Y),topic2);
+
 
 %figure;
 % set(0,'defaultfigurecolor','w');
@@ -23,8 +20,8 @@ nonloc = readMessages(bagselect2,'DataFormat','struct');
 % 
 % xlabel('y/m');
 % ylabel('x/m');
-% title('两种定位信息');
-%legend('RTK定位','无依托定位');
+% title('');
+%legend('','');
 %figure('Color','white');
 % x = 1:1:37836;
 % y = 1:1:38202;
@@ -62,6 +59,8 @@ maxindex = 707;
 diffs = [];
 ry =[];
 my =[];
+
+%Linear Interpolation
 for i=1:1:maxindex
      k1= find(angles1(:,1)-i>0,1);
      k2= find(angles2(:,1)-i>0,1);
@@ -81,8 +80,8 @@ rmsevalue = sqrt(mean((diffs).^2));
 j = 1:1:maxindex;
 set(0,'defaultfigurecolor','w');
 plot(c,diffs,'LineWidth',2);
-ylabel('yaw角误差/^o');
+ylabel('yaw/^o');
 xlabel('时间/s');
-title('yaw角误差');
+title('yaw');
 grid on;
 
